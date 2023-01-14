@@ -3,7 +3,7 @@ import { createServer } from 'http'
 import { schema } from '../../src/schema'
 
 const yoga = createYoga({
-  graphqlEndpoint: '/',
+  graphqlEndpoint: '/.netlify/functions/api',
   schema,
   context: (req) => {
     return {
@@ -12,6 +12,6 @@ const yoga = createYoga({
   },
 })
 
-export const server = createServer(yoga)
+export const handler = createServer(yoga)
 
 
