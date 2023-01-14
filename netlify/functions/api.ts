@@ -1,23 +1,22 @@
+import serverless from "serverless-http";
+
 import { createYoga } from 'graphql-yoga'
 import { createServer } from 'http'
 import { schema } from '../../src/schema'
-import { Handler } from '@netlify/functions'
+import { PrismaClient } from '@prisma/client'
 
-//@ts-ignore
-const handler: Handler = async (_event, _context) => {
+const prisma = new PrismaClient()
 
-const yoga = createYoga({
-  graphqlEndpoint: '/graphql',
+export const yoga = createYoga({
+  graphqlEndpoint: "/.netlify/functions/api",
   schema,
   context: (req) => {
     return {
       req,
+      prisma,
     }
   },
 })
-const server = createServer(yoga)
-return server
-}
-export  { handler } 
 
 
+export const handler = serverless(yoga);
