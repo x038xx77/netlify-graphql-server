@@ -16,9 +16,7 @@ const yoga = createYoga({
   },
 })
 const server = createServer(yoga)
-return {
- server:server
-};
+return server
 }
 export  { handler } 
 
