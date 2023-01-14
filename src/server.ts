@@ -1,36 +1,42 @@
-import { createYoga } from 'graphql-yoga'
-import { createServer } from 'http'
-import { schema } from './schema'
+//@ts-ignore
+import { serve } from 'https://deno.land/std@0.157.0/http/server.ts';
+import { createYoga, createSchema } from 'https://esm.sh/graphql-yoga@3.1.1?deps=graphql@16.6.0';
+import SchemaBuilder from 'https://esm.sh/@pothos/deno/packages/core/mod.ts';
+import RelayPlugin from 'https://esm.sh/@pothos/deno/packages/plugin-relay/mod.ts';
 
-export const yoga = createYoga({
-  // graphqlEndpoint: '/graphql',
-  schema,
-  context: (req) => {
-    return {
-      req,
+const builder = new SchemaBuilder({});
+
+builder.queryType({
+  fields: (t:any) => ({
+    hello: t.string({
+      args: {
+        name: t.arg.string({}),
+      },
+      resolve: (_, { name }:any) => `hello, ${name || 'World'}`,
+    }),
+  }),
+});
+
+export const schema = createSchema({
+  typeDefs: /* GraphQL */ `
+    type Query {
+      hello: String
     }
-  },
+  `,
+  resolvers: {
+    Query: {
+      hello: () => 'world'
+    }
+  }
 })
 
-const server = createServer(yoga)
 
-const port = 4000
-const HOST_APP = "127.0.0.1"
-server.listen({
-    port: port as number,
-    host: HOST_APP || "localhost"
+const yoga = createYoga({
+  schema: schema,
+});
+
+serve(yoga, {
+  onListen({ hostname, port }:any) {
+    console.log(`Listening on http://${hostname}:${port}/graphql`);
   },
-  () => {
-      console.log(`\
-    🚀 Server ready at: http://127.0.0.1:4000
-    ⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
-      `)
-    }) 
-
-
-// server.listen(4000, () => {
-//   console.log(`\
-// 🚀 Server ready at: http://127.0.0.1:4000
-// ⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
-//   `)
-// })
+});
