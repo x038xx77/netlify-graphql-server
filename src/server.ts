@@ -14,9 +14,23 @@ const yoga = createYoga({
 
 const server = createServer(yoga)
 
-server.listen(4000, () => {
-  console.log(`\
-🚀 Server ready at: http://127.0.0.1:4000
-⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
-  `)
-})
+const port = 4000
+const HOST_APP = "127.0.0.1"
+server.listen({
+    port: port as number,
+    host: HOST_APP || "localhost"
+  },
+  () => {
+      console.log(`\
+    🚀 Server ready at: http://127.0.0.1:4000
+    ⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
+      `)
+    }) 
+
+
+// server.listen(4000, () => {
+//   console.log(`\
+// 🚀 Server ready at: http://127.0.0.1:4000
+// ⭐️ See sample queries: http://pris.ly/e/ts/graphql#using-the-graphql-api
+//   `)
+// })
