@@ -1,0 +1,14 @@
+[build]
+  command = "pnpm build"
+  functions = "netlify/functions"
+  publish = "frontend/dist/"
+
+[[redirects]]
+  from = "/*"
+  to = "frontend/index.html"
+  status = 200
+
+[dev]
+  command = "pnpm start"
+  targetPort = 3000
+  publish = "frontend/dist"
