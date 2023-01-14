@@ -1,9 +1,10 @@
 [build]
   command = "pnpm build"
-  targetPort = 4000
-  
+  functions = "netlify/functions"
+  publish = "frontend/dist/"
+
 
 [dev]
   command = "pnpm start"
   targetPort = 4000
- 
+  
