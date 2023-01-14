@@ -2,6 +2,10 @@
   command = "pnpm build"
   functions = "netlify/functions"
   publish = "./"
+
+
+[[plugins]]
+package = "./prisma-client-plugin"
   
 
 [dev]
